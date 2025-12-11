@@ -250,9 +250,13 @@
     }
 
     .game-card img {
-      width: 100%;
       border-radius: 10px;
       margin-bottom: 15px;
+    }
+
+    .game-card.game-dino img {
+      border-radius: 0px;
+      background-color: white;
     }
 
     .game-card a {
@@ -494,7 +498,7 @@
   <!-- MAIN GAME SECTION -->
   <section class="game-section">
 
-    <div class="game-card" data-genre="adventure, action, retro arcade, level base" data-link="GameDino.html">
+    <div class="game-card game-dino" data-genre="adventure, action, retro arcade, level base" data-link="GameDino.html">
       <span class="fav-btn" onclick="toggleFavorite('Dino Platform')">★</span>
       <img src="GameDino.png" height="300" alt="Game 1" />
       <h2>Dino Platform</h2>
