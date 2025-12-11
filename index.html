@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GameHub Online</title>
+    <link rel="icon" type="image/png" href="LogoGameHub - Copy.png">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Panel animasi */
+    #page-transition {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 9998;
+      transform: translateY(100%);
+      transition: transform .6s ease-in-out;
+    }
+
+    /* Saat halaman masuk */
+    body.page-loaded #page-transition {
+      transform: translateY(-100%);
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Orbitron', sans-serif;
+      
+      background: radial-gradient(circle, #0a0a0a 0%, #000000 100%);
+      color: #00eaff;
+      overflow-x: hidden;
+    }
+
+    body {
+    background-color: #0c0f15;
+    background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 120px 120px;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 80%, rgba(0,255,204,0.25), transparent 60%),
+        radial-gradient(circle at 80% 20%, rgba(0,140,255,0.25), transparent 60%),
+        radial-gradient(circle at 50% 50%, rgba(0,90,255,0.18), transparent 70%);
+      filter: blur(90px);
+      animation: nebulaMove 12s ease-in-out infinite alternate;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    @keyframes nebulaMove {
+      0%   { transform: scale(1);   opacity: 0.7; }
+      100% { transform: scale(1.25); opacity: 1; }
+    }
+
+    /* === EXAMPLE LAYOUT (optional) === */
+    header {
+      padding: 20px;
+      text-align: center;
+      font-size: 2.5rem;
+      text-shadow: 0 0 10px #00c8ff;
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .card {
+      backdrop-filter: blur(10px);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+    }
+    
+    /* Sidebar */
+    #sidebar {
+      position: fixed;
+      top: 0;
+      left: -260px;
+      width: 260px;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      border-right: 2px solid #00eaff;
+      padding-top: 60px;
+      transition: 0.4s ease;
+      box-shadow: 4px 0 20px #00eaff40;
+      z-index: 999;
+    }
+
+    #sidebar.active {
+      left: 0;
+    }
+
+    #sidebar a {
+      color: #00eaff;
+      display: block;
+      padding: 18px 25px;
+      text-decoration: none;
+      font-size: 1.1rem;
+      border-bottom: 1px solid #00eaff20;
+      transition: 0.3s;
+    }
+
+    #sidebar a:hover {
+      background: #00eaff20;
+    }
+
+    /* Toggle Button */
+    #toggleBtn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-size: 2rem;
+      background: #00eaff;
+      color: black;
+      border-radius: 8px;
+      padding: 8px 14px;
+      cursor: pointer;
+      z-index: 1000;
+      transition: 0.3s;
+      z-index: 9999; /* PASTI di atas semua elemen */
+    }
+
+    #toggleBtn:hover {
+      background: #0096a8;
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 20px;
+      border-bottom: 2px solid #00eaff;
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+
+  header h1 {
+    display: inline-block;               /* allows background to show on text */
+    font-size: 4rem;
+    font-weight: 800;
+    letter-spacing: -2px;
+    padding: 0.2rem 0;
+
+    /* gradient as background (no external file needed) */
+    background: linear-gradient(135deg, #0b1e33 0%, #22364a 25%, #5c5c5c 50%, #00eaff 75%, #D3D3D3 100%);
+
+    background-size: 200% 100%;          /* make it wider so movement is visible */
+    background-repeat: no-repeat;
+
+    /* clip gradient into the text */
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    text-shadow: 0 0 18px rgba(0,234,255,0.25);
+    animation: slide 4s linear infinite;
+  }
+
+  @keyframes slide {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+.taglist {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 0.5rem 0;
+}
+
+.scroller {
+  display: flex;
+  white-space: nowrap;
+  width: max-content;
+  gap: 1rem;
+  animation: scroll 18s linear infinite;
+}
+
+.tag {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.85rem;
+  background-color: #334155;
+  padding: 0.65rem 1rem;
+  border-radius: 0.4rem;
+}
+
+.tag span {
+  color: #00eaff;
+  font-size: 1.2rem;
+}
+
+/* Fade left & right */
+.fade-left,
+.fade-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  pointer-events: none;
+}
+
+/* Smooth infinite scrolling */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+    .game-section {
+      padding: 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-left: 20px;
+    }
+
+    .game-card {
+      position: relative;
+      background: rgba(0, 0, 0, 0.6);
+      border: 2px solid #00eaff;
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 0 20px #00eaff40;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .game-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px #00eaffcc;
+    }
+
+    .game-card img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .game-card a {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      color: black;
+      background: #00eaff;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #00eaffaa;
+      margin-top: 30px;
+    }
+
+    .fav-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #00eaff50;
+      transition: 0.3s;
+    }
+
+    .fav-btn.active {
+      color: #00eaff;
+      text-shadow: 0 0 12px #00eaff;
+    }
+
+    /* -------------------------
+       NEWS GRID + CARD STYLE
+    -------------------------- */
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 25px;
+      margin-top: 40px;
+    }
+
+    .news-card {
+      background: rgba(0,0,0,0.6);
+      border: 2px solid #00eaff60;
+      padding: 20px;
+      border-radius: 12px;
+      transition: 0.3s;
+      box-shadow: 0 0 15px #00eaff20;
+    }
+
+    .news-card:hover {
+      transform: translateY(-6px);
+      border-color: #00eaff;
+      box-shadow: 0 0 25px #00eaff80;
+    }
+
+    .news-card h3 {
+      margin: 0;
+      margin-bottom: 10px;
+      color: #00eaff;
+    }
+
+    .news-card p {
+      color: #bfeaff;
+      font-size: 0.95rem;
+    }
+
+    .news-card .date {
+      margin-top: 12px;
+      font-size: 0.8rem;
+      color: #88c9ff;
+      display: block;
+    }
+
+    /* SPECIAL POPULAR GAME CARD */
+    .popular-card {
+      background: rgba(0, 255, 170, 0.15);
+      border: 2px solid #00ffaa;
+      box-shadow: 0 0 25px #00ffaa50;
+      transition: 0.3s ease;
+    }
+
+    .popular-card:hover {
+      transform: scale(1.05);
+      border-color: #00ffcc;
+      box-shadow: 0 0 35px #00ffccaa;
+    }
+
+
+    @media (max-width: 768px) {
+      .news-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* FULLSCREEN GAME VIEWER */
+#gameModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.93);
+  backdrop-filter: blur(4px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+}
+
+#gameFrame {
+  width: 90%;
+  height: 90%;
+  border: 2px solid #00eaff;
+  border-radius: 12px;
+  box-shadow: 0 0 25px #00eaff;
+  background: black;
+}
+
+#closeGameBtn {
+  position: absolute;
+  top: 25px;
+  right: 40px;
+  font-size: 2.5rem;
+  cursor: pointer;
+  color: #00eaff;
+  text-shadow: 0 0 15px #00eaff;
+  font-weight: bold;
+}
+
+  </style>
+</head>
+
+<body>
+
+  <div id="page-transition"></div>
+
+  <!-- Toggle Button -->
+  <div id="toggleBtn">☰</div>
+
+  <!-- Sidebar -->
+  <div id="sidebar">
+    <a href="#top">Home</a>
+    <a href="#about">About</a>
+    <a href="#news">News & Updates</a>
+    <a href="#favorites">Favorites</a>
+    <a href="#team">Our Team</a>
+    <a href="#support">Contact / Support</a>
+    <a href="#" onclick="logoutUser()">Logout</a>
+    <div id="userInfo" style="padding: 15px 25px; color: #000000; background: #00eaff; margin-bottom: 10px; font-weight: bold; border-bottom: 2px solid #00c8ff;">
+        </div>
+  </div>
+
+  <header id="top">
+    <h1>GAMEHUB ONLINE</h1>
+    <p>Portal Game Online — Klik dan Mainkan</p>
+
+  <div style="text-align:center; margin-top:40px; position:relative;">
+    <input
+      id="searchInput"
+      type="text"
+      placeholder="Search game or genre..."
+      style="
+        padding:12px 20px;
+        width:60%;
+        border:2px solid #00eaff;
+        border-radius:10px;
+        background:black;
+        color:#00eaff;
+        font-size:1.1rem;
+        text-align:center;
+        box-shadow:0 0 10px #00eaff50;
+      "
+      onkeyup="showPreview()"
+    >
+
+    <!-- SEARCH PREVIEW BOX -->
+    <div id="searchPreview"
+      style="
+        display:none;
+        position:absolute;
+        left:50%;
+        transform:translateX(-50%);
+        width:60%;
+        background:rgba(0,0,0,0.85);
+        border:2px solid #00eaff;
+        border-radius:10px;
+        max-height:300px;
+        overflow-y:auto;
+        box-shadow:0 0 20px #00eaff60;
+        margin-top:10px;
+        z-index:999;
+      ">
+    </div>
+  </div>
+  </header>
+
+<div class="taglist">
+  <div class="fade-left"></div>
+  <div class="fade-right"></div>
+
+  <!-- wrapper for smooth loop -->
+  <div class="scroller">
+    <!-- LIST 1 -->
+    <div class="tag"><span>#</span>Dino Platform</div>
+    <div class="tag"><span>#</span>Eka Game</div>
+    <div class="tag"><span>#</span>Ongaku</div>
+    <div class="tag"><span>#</span>Adventure</div>
+    <div class="tag"><span>#</span>Action</div>
+    <div class="tag"><span>#</span>Retro Arcade</div>
+    <div class="tag"><span>#</span>Level Base</div>
+    <div class="tag"><span>#</span>Quiz</div>
+    <div class="tag"><span>#</span>Historical</div>
+    <div class="tag"><span>#</span>Education</div>
+    <div class="tag"><span>#</span>Music</div>
+    <div class="tag"><span>#</span>Rhythm</div>
+
+    <!-- LIST 2 (duplicate untuk looping smooth) -->
+    <div class="tag"><span>#</span>Dino Platform</div>
+    <div class="tag"><span>#</span>Eka Game</div>
+    <div class="tag"><span>#</span>Ongaku</div>
+    <div class="tag"><span>#</span>Adventure</div>
+    <div class="tag"><span>#</span>Action</div>
+    <div class="tag"><span>#</span>Retro Arcade</div>
+    <div class="tag"><span>#</span>Level Base</div>
+    <div class="tag"><span>#</span>Quiz</div>
+    <div class="tag"><span>#</span>Historical</div>
+    <div class="tag"><span>#</span>Education</div>
+    <div class="tag"><span>#</span>Music</div>
+    <div class="tag"><span>#</span>Rhythm</div>
+  </div>
+</div>
+
+  <!-- MAIN GAME SECTION -->
+  <section class="game-section">
+
+    <div class="game-card" data-genre="adventure, action, retro arcade, level base" data-link="GameDino.html">
+      <span class="fav-btn" onclick="toggleFavorite('Dino Platform')">★</span>
+      <img src="GameDino.png" height="300" alt="Game 1" />
+      <h2>Dino Platform</h2>
+      <p>Dino membutuhkan susu! Ayo bantu dino mengumpulkan susu!</p>
+      <a href="https://owowed.github.io/dino.owowed.moe/" target="_blank">Mainkan</a>
+      <a href="#" onclick="goTo('GameDino.html')">Learn More</a>
+    </div>
+
+    <div class="game-card" data-genre="quiz, adventure, historical, education" data-link="https://ekagame.github.io/ekagame31/">
+      <span class="fav-btn" onclick="toggleFavorite('Eka Game')">★</span>
+      <img src="GameQuiz.png" height="300" alt="Game 2" />
+      <h2>Eka Game</h2>
+      <p>Ayo tes pengetahuan mu melalui game bertema kerajaan!</p>
+      <a onclick="openGame('https://ekagame.github.io/ekagame31/')" style="cursor:pointer;">Mainkan</a>
+      <a href="#" onclick="goTo('GameQuiz.html')">Learn More</a>
+    </div>
+
+    <div class="game-card" data-genre="music, education, rhythm" data-link="https://www.canva.com/design/DAG4lNW6rAU/bJcuTkvOj_yLMjiWUTYmAw/edit?utm_content=DAG4lNW6rAU&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton">
+      <span class="fav-btn" onclick="toggleFavorite('Ongaku')">★</span>
+      <img src="GameMusic.png" height="300" alt="Game 3" />
+      <h2>Ongaku</h2>
+      <p>Dengarkan lagu sesuai dengan seleramu!</p>
+      <a href="https://www.canva.com/design/DAG4lNW6rAU/bJcuTkvOj_yLMjiWUTYmAw/edit?utm_content=DAG4lNW6rAU&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton" target="_blank">Mainkan</a>
+      <a href="#" onclick="goTo('GameMusic.html')">Learn More</a>
+    </div>
+
+  </section>
+
+  <footer>
+    <p>© 2025 GameHub Online — Website Gaming Interaktif</p>
+  </footer>
+
+  <!-- SECTION: ABOUT -->
+  <section id="about" style="padding:60px; border-top:2px solid #00eaff50;">
+    <h1 style="text-align:center; text-shadow:0 0 15px #00eaff;">ABOUT</h1>
+    <p style="max-width:700px; margin:auto; text-align:center; margin-top:20px;">
+      GameHub Online adalah platform yang menyediakan berbagai game browser yang dapat dimainkan langsung tanpa instalasi. Website ini dibuat untuk memudahkan pengguna menemukan game favorit mereka, lengkap dengan deskripsi singkat serta informasi dasar dari tiap game. Tujuan utamanya adalah memberikan pengalaman bermain yang cepat, simpel, dan nyaman kapan pun pengguna menginginkannya.
+    </p>
+  </section>
+
+  <!-- SECTION: NEWS -->
+  <section id="news" style="padding:60px; border-top:2px solid #00eaff50;">
+    <h1 style="text-align:center; text-shadow:0 0 15px #00eaff;">NEWS & UPDATES</h1>
+    <p style="text-align:center;">Update terbaru game & fitur website</p>
+
+  <!-- POPULAR GAME (1 KOLOM) -->
+  <div style="margin-top:50px; max-width:700px; margin:auto;">
+    <div class="news-card popular-card">
+      <h3>🔥 Game Terpopuler Minggu Ini</h3>
+      <p>Ongaku adalah game terpopuler minggu ini.  
+      Dengan update lagu yang ditambahkan, perbaikan bug, kini Ongaku menjadi game terpopuler dan semakin seru saat digunakan</p>
+      <span class="date">19 November 2025</span>
+    </div>
+  </div>
+
+  <!-- NEWS NORMAL (2 KOLOM) -->
+  <div class="news-grid" style="margin-top:50px;">
+
+    <div class="news-card">
+      <h3>Update Patch 1.1 Ongaku</h3>
+      <p>Bug telah diperbaiki, beberapa lagu baru telah ditambahkan.</p>
+      <span class="date">19 November 2025</span>
+    </div>
+
+    <div class="news-card">
+      <h3>Update Patch 1.1 Dino Platform</h3>
+      <p>Bug telah diperbaiki, penambahan fitur baru.</p>
+      <span class="date">19 November 2025</span>
+    </div>
+
+    <div class="news-card">
+      <h3>Update Patch 1.1 Eka Game</h3>
+      <p>Penambahan storyline yang membuat game semakin seru dan semakin panjang.</p>
+      <span class="date">19 November 2025</span>
+    </div>
+
+    <div class="news-card">
+      <h3>Update Website</h3>
+      <p>Interface dan beberapa function terbaru website, membuat website semakin interaktif.</p>
+      <span class="date">19 November 2025</span>
+    </div>
+
+  </div>
+</section>
+
+  <!-- SECTION: FAVORITES -->
+  <section id="favorites" style="padding:60px; border-top:2px solid #00eaff50;">
+    <h1 style="text-align:center; text-shadow:0 0 15px #00eaff;">FAVORITES</h1>
+    <p style="text-align:center;">Game favoritmu akan muncul di sini</p>
+  </section>
+
+    <!-- SECTION: OUR TEAM -->
+  <section id="team" style="padding:60px; border-top:2px solid #00eaff50;">
+    <h1 style="text-align:center; text-shadow:0 0 15px #00eaff;">OUR TEAM</h1>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:30px; margin-top:40px;">
+      <div style="background:rgba(0,0,0,0.6); border:2px solid #00eaff; padding:20px; border-radius:15px; text-align:center;">
+        <h2>Taruna</h2>
+        <p>Dino Platform Developer</p>
+      </div>
+      <div style="background:rgba(0,0,0,0.6); border:2px solid #00eaff; padding:20px; border-radius:15px; text-align:center;">
+        <h2>Putra</h2>
+        <p>Eka Games Developer</p>
+      </div>
+      <div style="background:rgba(0,0,0,0.6); border:2px solid #00eaff; padding:20px; border-radius:15px; text-align:center;">
+        <h2>Agung</h2>
+        <p>Ongaku Developer</p>
+      </div>
+      <div style="background:rgba(0,0,0,0.6); border:2px solid #00eaff; padding:20px; border-radius:15px; text-align:center;">
+        <h2>Kaizen</h2>
+        <p>GameHub Website Developer</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION: SUPPORT -->
+  <section id="support" style="padding:60px; border-top:2px solid #00eaff50; margin-bottom:80px;">
+    <h1 style="text-align:center; text-shadow:0 0 15px #00eaff;">CONTACT / SUPPORT</h1>
+    <p style="text-align:center;">Hubungi kami melalui email atau sosial media</p>
+    <p style="text-align:center;">adono123123213421312@gmail.com</p>
+  </section>
+
+<script>
+  if (localStorage.getItem("loggedIn") !== "true") {
+    window.location.href = "login.html";
+  }
+
+  function logoutUser() {
+    localStorage.removeItem("loggedIn");
+    window.location.href = "login.html";
+  }
+
+  // Efek masuk
+  window.onload = () => {
+  document.body.classList.add("page-loaded");
+  };
+
+  // Fungsi pindah halaman dengan animasi keluar
+  function goTo(url) {
+    const panel = document.getElementById("page-transition");
+    panel.style.transform = "translateY(0)";
+    setTimeout(() => {
+      window.location.href = url;
+    }, 600); 
+  }
+
+  // === START: CODE PERBAIKAN SIDEBAR ===
+  const sidebar = document.getElementById('sidebar');
+  const toggleBtn = document.getElementById('toggleBtn');
+
+  toggleBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('active');
+  });
+
+  // AUTO CLOSE SIDEBAR AFTER CLICK
+  document.querySelectorAll('#sidebar a').forEach(link => {
+    link.addEventListener('click', () => {
+    sidebar.classList.remove('active');
+  });
+  });
+  // === END: CODE PERBAIKAN SIDEBAR ===
+
+  function searchGames() {
+    const keyword = document.getElementById("searchInput").value.toLowerCase();
+    const cards = document.querySelectorAll(".game-card");
+
+    cards.forEach(card => {
+      const name = card.querySelector("h2").innerText.toLowerCase();
+      const genre = card.getAttribute("data-genre").toLowerCase();
+
+      if (name.includes(keyword) || genre.includes(keyword)) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+    });
+  }
+
+function showPreview() {
+      const keyword = document.getElementById("searchInput").value.toLowerCase();
+      const previewBox = document.getElementById("searchPreview");
+      const cards = document.querySelectorAll(".game-card");
+
+      if (keyword.trim() === "") {
+        previewBox.style.display = "none";
+        previewBox.innerHTML = "";
+        return;
+      }
+
+      let results = "";
+
+      cards.forEach(card => {
+        const name = card.querySelector("h2").innerText.toLowerCase();
+        const genre = card.getAttribute("data-genre").toLowerCase();
+        const img = card.querySelector("img").src;
+        const link = card.getAttribute("data-link");
+
+        if (name.includes(keyword) || genre.includes(keyword)) {
+          results += `
+            <div onclick="window.location.href='${link}'"
+              style="
+                display:flex;
+                align-items:center;
+                gap:15px;
+                padding:12px;
+                border-bottom:1px solid #00eaff40;
+                cursor:pointer;
+                transition:0.2s;
+              "
+              onmouseover="this.style.background='rgba(0,234,255,0.1)'"
+              onmouseout="this.style.background='transparent'">
+
+              <img src="${img}" style="width:70px; height:70px; border-radius:10px; border:1px solid #00eaff;">
+              
+              <div>
+                <h3 style="margin:0; color:#00eaff;">${card.querySelector("h2").innerText}</h3>
+                <p style="margin:0; color:#88c9ff; font-size:0.9rem;">
+                  Genre: ${genre}
+                </p>
+              </div>
+            </div>
+          `;
+        }
+      });
+
+      previewBox.innerHTML = results;
+      previewBox.style.display = results === "" ? "none" : "block";
+    }
+
+
+
+  // FAVORITES SYSTEM
+  function toggleFavorite(gameName) {
+    let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    const index = favorites.indexOf(gameName);
+
+    if (index === -1) {
+      favorites.push(gameName);
+    } else {
+    favorites.splice(index, 1);
+    }
+
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    updateFavoriteButtons();
+    renderFavorites();
+  }
+
+  /* ========== GAME MODAL SYSTEM ========== */
+  function openGame(url) {
+    document.getElementById("gameFrame").src = url;
+    document.getElementById("gameModal").style.display = "flex";
+  }
+
+  function closeGame() {
+    document.getElementById("gameModal").style.display = "none";
+    document.getElementById("gameFrame").src = "";
+  }
+
+
+  function updateFavoriteButtons() {
+    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    document.querySelectorAll('.game-card').forEach(card => {
+      const name = card.querySelector('h2').innerText;
+      const btn = card.querySelector('.fav-btn');
+      if (favorites.includes(name)) {
+      btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+  }
+
+  function renderFavorites() {
+    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    const favSection = document.querySelector('#favorites');
+
+    let html = '<h1 style="text-align:center; text-shadow:0 0 15px #00eaff;">FAVORITES</h1>';
+
+    if (favorites.length === 0) {
+      html += '<p style="text-align:center;">Belum ada game favorit.</p>';
+    } else {
+      html += '<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(250px,1fr)); gap:30px; margin-top:30px;">';
+      favorites.forEach(g => {
+        html += `
+            <div style="background:rgba(0,0,0,0.6); border:2px solid #00eaff; padding:20px; border-radius:15px; text-align:center;">
+              <h2>${g}</h2>
+              <p>Game favoritmu.</p>
+              </div>`;
+      });
+      html += '</div>';
+    }
+
+    favSection.innerHTML = html;
+  }
+
+  function loadUserInfo() {
+    // ASUMSI: Nama pengguna disimpan di localStorage dengan kunci 'username'
+    const username = localStorage.getItem('username'); 
+    const userInfoDiv = document.getElementById('userInfo');
+
+    if (username) {
+        userInfoDiv.innerHTML = `Account: ${username}`;
+    } else {
+        userInfoDiv.innerHTML = `Account: -`;
+    }
+}
+
+  updateFavoriteButtons();
+  renderFavorites();
+  loadUserInfo(); // Panggilan fungsi baru
+  </script>
+    <!-- GAME MODAL IFRAME -->
+<div id="gameModal">
+  <div id="closeGameBtn" onclick="closeGame()">✕</div>
+  <iframe id="gameFrame" src=""></iframe>
+</div>
+
+</body>
+</html>

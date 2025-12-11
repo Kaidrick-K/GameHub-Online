@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+    <link rel="icon" type="image/png" href="LogoGameHub - Copy.png">
+  <style>
+
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #0d0d0d;
+      font-family: 'Orbitron', sans-serif;
+      color: white;
+
+      opacity: 0; /* animasi fade-in halus */
+      transition: opacity .6s ease;
+    }
+    body.loaded {
+      opacity: 1;
+    }
+
+    /* background pattern */
+    body {
+      background-color: #0e1117;
+      background-image:
+      linear-gradient(135deg, rgba(255,255,255,0.03) 25%, transparent 25%),
+      linear-gradient(315deg, rgba(255,255,255,0.03) 25%, transparent 25%);
+      background-size: 40px 40px;
+    }
+
+    .login-box {
+      background: #1a1a1a;
+      padding: 30px;
+      width: 320px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #00bcd4;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      background: #333;
+      color: white;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      background: #00bcd4;
+      color: black;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: #0097a7;
+    }
+
+    #msg {
+      text-align: center;
+      margin-top: 10px;
+      height: 20px;
+      color: #ff5757;
+    }
+
+    /* PANEL TRANSISI SLIDE-UP */
+    #transition {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 9999;
+      transform: translateY(100%);  /* mulai dari bawah */
+      transition: transform .7s ease-in-out;
+    }
+    #transition.active {
+      transform: translateY(0); /* naik menutup layar */
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- panel transisi -->
+  <div id="transition"></div>
+
+  <div class="login-box">
+    <h2>Login</h2>
+
+    <input id="username" placeholder="Username">
+    <input id="password" type="password" placeholder="Password">
+
+    <button onclick="login()">Login</button>
+
+    <div id="msg"></div>
+  </div>
+
+  <script>
+    const users = [
+      { username: "admin", password: "12345" },
+      { username: "user1", password: "user1" },
+      { username: "user2", password: "user2" },
+      { username: "user3", password: "user3" }
+    ];
+
+    // animasi masuk halaman → panel turun
+    window.addEventListener("load", () => {
+      document.body.classList.add("loaded");
+      setTimeout(() => {
+        document.getElementById("transition").style.transform = "translateY(-100%)";
+      }, 50);
+    });
+
+    function login() {
+      const u = document.getElementById("username").value;
+      const p = document.getElementById("password").value;
+
+      const ok = users.find(x => x.username === u && x.password === p);
+
+      if (ok) {
+        localStorage.setItem("loggedIn", "true");
+        localStorage.setItem("username", ok.username);
+      
+        const panel = document.getElementById("transition");
+        panel.classList.add("active"); // panel naik → tutup layar
+
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 700);
+      } else {
+        document.getElementById("msg").textContent = "Invalid username or password";
+      }
+    }
+  </script>
+
+</body>
+</html>
