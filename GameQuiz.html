@@ -239,8 +239,10 @@
     .preview-item img, 
     .preview-item video {
         width: 100%;
-        height: 200px;
-        object-fit: cover;
+        height: auto;
+        aspect ratio: 16 / 9;
+        object-fit: contain;
+        display: block;
     }
 
     /* GRID PREVIEW */
@@ -340,6 +342,7 @@
 
 </body>
 </html>
+
 
 
 
