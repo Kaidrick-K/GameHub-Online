@@ -236,11 +236,13 @@
         transform: scale(1.05);
         box-shadow: 0 0 25px #00eaff90;
     }
-    .preview-item img, 
+    .preview-item img,
     .preview-item video {
         width: 100%;
-        height: 200px;
-        object-fit: cover;
+        height: auto;
+        aspect ratio: 16 / 9;
+        object-fit: contain;
+        display: block;
     }
 
     /* GRID PREVIEW */
@@ -342,5 +344,6 @@
 
 </body>
 </html>
+
 
 
